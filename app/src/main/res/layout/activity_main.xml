@@ -6,11 +6,7 @@
     android:layout_height="match_parent"
     tools:context="yfdyf.myapplication.MainActivity">
 
-    <yfdyf.myapplication.DiffuseView
-        android:layout_width="match_parent"
-        android:background="#fff"
-        android:layout_weight="1"
-        android:layout_height="0dp" />
+
     <yfdyf.myapplication.DiffuseImgView
         android:layout_weight="1"
         android:background="#fff"

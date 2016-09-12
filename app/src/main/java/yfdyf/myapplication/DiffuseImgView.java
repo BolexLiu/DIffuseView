@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -35,7 +36,9 @@ public class DiffuseImgView extends SurfaceView implements SurfaceHolder.Callbac
     private Bitmap bitmap;
     private Canvas mCanvas;
     private Bitmap jj;
-    int imgNub=1;
+    int imgNub = 1;
+    private int width;
+    private int height;
 
 
     public DiffuseImgView(Context context) {
@@ -56,8 +59,8 @@ public class DiffuseImgView extends SurfaceView implements SurfaceHolder.Callbac
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        int width = getMeasuredWidth();
-        int height = getMeasuredHeight();
+        width = getMeasuredWidth();
+        height = getMeasuredHeight();
         // 初始化bitmap
         bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         mCanvas = new Canvas(bitmap);
@@ -107,25 +110,25 @@ public class DiffuseImgView extends SurfaceView implements SurfaceHolder.Callbac
                 lastY = Y;
                 integer = Integer.valueOf(randomText(4));
                 mycoler = Integer.valueOf("-1" + randomText(6));
-                mCanvas.drawBitmap(jj, 0, 0, null);
-            switch (imgNub){
-                case 1:
-                    imgNub++;
-                    jj = BitmapFactory.decodeResource(getResources(), R.drawable.aa);
-                    break;
-                case 2:
-                    jj = BitmapFactory.decodeResource(getResources(), R.drawable.bb);
-                    imgNub++;
-                    break;
-                case 3:
-                    jj = BitmapFactory.decodeResource(getResources(), R.drawable.cc);
-                    imgNub++;
-                    break;
-                case 4:
-                    jj = BitmapFactory.decodeResource(getResources(), R.drawable.jj);
-                    imgNub=1;
-                    break;
-            }
+                mCanvas.drawBitmap(jj, null, new Rect(0, 0, width, height), null);
+                switch (imgNub) {
+                    case 1:
+                        imgNub++;
+                        jj = BitmapFactory.decodeResource(getResources(), R.drawable.aa);
+                        break;
+                    case 2:
+                        jj = BitmapFactory.decodeResource(getResources(), R.drawable.bb);
+                        imgNub++;
+                        break;
+                    case 3:
+                        jj = BitmapFactory.decodeResource(getResources(), R.drawable.cc);
+                        imgNub++;
+                        break;
+                    case 4:
+                        jj = BitmapFactory.decodeResource(getResources(), R.drawable.jj);
+                        imgNub = 1;
+                        break;
+                }
 
                 diffuseController.start();
                 break;
@@ -135,7 +138,7 @@ public class DiffuseImgView extends SurfaceView implements SurfaceHolder.Callbac
 
     @Override
     protected void onDraw(Canvas canvas) {
-        canvas.drawBitmap(jj, 0, 0, null);
+        canvas.drawBitmap(jj, null, new Rect(0, 0, width, height), null);
         draw();
         canvas.drawBitmap(bitmap, 0, 0, null);
         super.onDraw(canvas);
@@ -143,7 +146,7 @@ public class DiffuseImgView extends SurfaceView implements SurfaceHolder.Callbac
 
 
     /**
-     * 绘制线条
+     * 绘制
      */
     private void draw() {
         p.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
