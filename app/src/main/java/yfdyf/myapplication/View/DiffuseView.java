@@ -1,15 +1,9 @@
-package yfdyf.myapplication;
+package yfdyf.myapplication.View;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -23,7 +17,7 @@ import java.util.Set;
 /**
  * author：Bolex on 2016/9/8 14:22
  */
-public class DiffuseImgView extends SurfaceView implements SurfaceHolder.Callback {
+public class DiffuseView extends SurfaceView implements SurfaceHolder.Callback {
 
     private Paint p;
     float lastx = -100;
@@ -33,45 +27,25 @@ public class DiffuseImgView extends SurfaceView implements SurfaceHolder.Callbac
     private float diffuseValue = 1;
     private Integer mycoler = Integer.valueOf("-1" + randomText(6));
     Integer integer = Integer.valueOf(randomText(2));
-    private Bitmap bitmap;
-    private Canvas mCanvas;
-    private Bitmap jj;
-    int imgNub = 1;
-    private int width;
-    private int height;
 
 
-    public DiffuseImgView(Context context) {
+    public DiffuseView(Context context) {
         super(context);
         init();
     }
 
-    public DiffuseImgView(Context context, AttributeSet attrs) {
+    public DiffuseView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public DiffuseImgView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public DiffuseView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        width = getMeasuredWidth();
-        height = getMeasuredHeight();
-        // 初始化bitmap
-        bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        mCanvas = new Canvas(bitmap);
-        mCanvas.drawColor(Color.parseColor("#c0c0c0"));
-    }
-
     void init() {
         p = new Paint();
-        p.setColor(mycoler);
-        p.setAntiAlias(true);
-        jj = BitmapFactory.decodeResource(getResources(), R.drawable.jj);
         getHolder().addCallback(this);
         initAnimator();
     }
@@ -102,7 +76,7 @@ public class DiffuseImgView extends SurfaceView implements SurfaceHolder.Callbac
             case MotionEvent.ACTION_DOWN:
             case MotionEvent.ACTION_MOVE:
                 break;
-            case MotionEvent.ACTION_UP:
+                case  MotionEvent.ACTION_UP:
                 float offsetX = x - lastx;
                 float offsetY = Y - lastY;
                 System.out.println("X:" + offsetX + "y:" + offsetY);
@@ -110,26 +84,6 @@ public class DiffuseImgView extends SurfaceView implements SurfaceHolder.Callbac
                 lastY = Y;
                 integer = Integer.valueOf(randomText(4));
                 mycoler = Integer.valueOf("-1" + randomText(6));
-                mCanvas.drawBitmap(jj, null, new Rect(0, 0, width, height), null);
-                switch (imgNub) {
-                    case 1:
-                        imgNub++;
-                        jj = BitmapFactory.decodeResource(getResources(), R.drawable.aa);
-                        break;
-                    case 2:
-                        jj = BitmapFactory.decodeResource(getResources(), R.drawable.bb);
-                        imgNub++;
-                        break;
-                    case 3:
-                        jj = BitmapFactory.decodeResource(getResources(), R.drawable.cc);
-                        imgNub++;
-                        break;
-                    case 4:
-                        jj = BitmapFactory.decodeResource(getResources(), R.drawable.jj);
-                        imgNub = 1;
-                        break;
-                }
-
                 diffuseController.start();
                 break;
         }
@@ -138,21 +92,12 @@ public class DiffuseImgView extends SurfaceView implements SurfaceHolder.Callbac
 
     @Override
     protected void onDraw(Canvas canvas) {
-        canvas.drawBitmap(jj, null, new Rect(0, 0, width, height), null);
-        draw();
-        canvas.drawBitmap(bitmap, 0, 0, null);
+
+        p.setColor(mycoler);
+        p.setAntiAlias(true);
+        canvas.drawCircle(lastx, lastY, integer * diffuseValue, p);
         super.onDraw(canvas);
     }
-
-
-    /**
-     * 绘制
-     */
-    private void draw() {
-        p.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
-        mCanvas.drawCircle(lastx, lastY, integer * diffuseValue, p);
-    }
-
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
