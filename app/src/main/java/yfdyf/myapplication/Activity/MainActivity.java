@@ -1,4 +1,4 @@
-package yfdyf.myapplication;
+package yfdyf.myapplication.Activity;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.transition.Slide;
 import android.view.View;
 
 import com.balysv.materialmenu.MaterialMenuDrawable;
@@ -16,8 +17,7 @@ import java.util.ArrayList;
 
 import yfdyf.myapplication.Adapter.MainAdpter;
 import yfdyf.myapplication.Adapter.MultipleItem;
-
-import static yfdyf.myapplication.R.id.toolbar;
+import yfdyf.myapplication.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,10 +32,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activitiy_main_md);
         my_content = (RecyclerView) findViewById(R.id.my_content);
-        mToolbar = (Toolbar) findViewById(toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         initToolBar();
         initRecycler();
+        setupWindowAnimations();
     }
 
     private void initToolBar() {
@@ -85,6 +86,15 @@ public class MainActivity extends AppCompatActivity {
         MainAdpter adapter = new MainAdpter(listMultipleItem);
         adapter.openLoadAnimation();
         my_content.setAdapter(adapter);
+    }
+
+    private void setupWindowAnimations() {
+        Slide slide = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            slide = new Slide();
+            slide.setDuration(1000);
+            getWindow().setExitTransition(slide);
+        }
     }
 
 }
