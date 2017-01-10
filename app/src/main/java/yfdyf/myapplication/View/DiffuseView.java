@@ -79,7 +79,7 @@ public class DiffuseView extends SurfaceView implements SurfaceHolder.Callback {
                 case  MotionEvent.ACTION_UP:
                 float offsetX = x - lastx;
                 float offsetY = Y - lastY;
-                System.out.println("X:" + offsetX + "y:" + offsetY);
+//                System.out.println("X:" + offsetX + "y:" + offsetY);
                 lastx = x;
                 lastY = Y;
                 integer = Integer.valueOf(randomText(4));
