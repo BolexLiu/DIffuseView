@@ -19,6 +19,7 @@
                          }
  ```
 
+##效果展示如下
 ![](https://github.com/yt7789451/DIffuseView/blob/master/show.gif)
 
 
